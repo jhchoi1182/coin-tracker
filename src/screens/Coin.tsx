@@ -55,7 +55,7 @@ const Tabs = styled.div`
   gap: 10px;
 `;
 
-const Tab = styled.span`
+const Tab = styled.span<{ isActive: boolean }>`
   text-align: center;
   text-transform: uppercase;
   font-size: 12px;
@@ -63,7 +63,7 @@ const Tab = styled.span`
   background-color: rgba(0, 0, 0, 0.5);
   padding: 7px 0px;
   border-radius: 10px;
-  color: ${(props) => props.theme.textColor};
+  color: ${(props) => (props.isActive ? props.theme.accentColor : props.theme.textColor)};
   a {
     display: block;
   }
@@ -133,6 +133,9 @@ function Coin() {
   const [loading, setLoading] = useState(true);
   const [info, setInfo] = useState<IInfoData>();
   const [priceInfo, setPriceInfo] = useState<IPriceData>();
+  const priceMatch = useMatch("/:coinID/price");
+  const chartMatch = useMatch("/:coinID/chart");
+  console.log(priceMatch);
   useEffect(() => {
     (async () => {
       const infoData = await (await fetch(`https://api.coinpaprika.com/v1/coins/${coinId}`)).json();
@@ -177,10 +180,10 @@ function Coin() {
             </OverviewItem>
           </Overview>
           <Tabs>
-            <Tab>
+            <Tab isActive={chartMatch !== null}>
               <Link to={`/${coinId}/chart`}>Chart</Link>
             </Tab>
-            <Tab>
+            <Tab isActive={priceMatch !== null}>
               <Link to={`/${coinId}/price`}>Price</Link>
             </Tab>
           </Tabs>
