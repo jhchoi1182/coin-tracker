@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
 import styled from "styled-components";
 import { fetchCoins } from "../api";
 import { useQuery } from "@tanstack/react-query";
@@ -15,9 +15,13 @@ interface ICoin {
   type: string;
 }
 
+interface ICoinsProps {
+  toggleDark: () => void;
+}
+
 const Coins = () => {
   const { isLoading, data } = useQuery<ICoin[]>(["allCoins"], fetchCoins);
-  console.log(data);
+  const { toggleDark } = useOutletContext<ICoinsProps>();
 
   return (
     <>
@@ -27,6 +31,7 @@ const Coins = () => {
         </Helmet>
         <Header>
           <Title>코인</Title>
+          <button onClick={toggleDark}>토글 모드</button>
         </Header>
         {isLoading ? (
           <Loader>로딩 중...</Loader>

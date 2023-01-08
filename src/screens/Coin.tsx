@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, Outlet, useLocation, useMatch, useParams } from "react-router-dom";
+import { Link, Outlet, useLocation, useMatch, useOutletContext, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useQuery } from "@tanstack/react-query";
 import { fetchCoinInfo, fetchCoinTickers } from "../api";
@@ -130,11 +130,16 @@ interface IPriceData {
   };
 }
 
+interface IIsDark {
+  isDark: boolean;
+}
+
 function Coin() {
   const { coinId } = useParams();
   const { state } = useLocation() as RouteState;
   const priceMatch = useMatch("/:coinID/price");
   const chartMatch = useMatch("/:coinID/chart");
+  const { isDark } = useOutletContext<IIsDark>();
 
   const { isLoading: infoLoading, data: infoData } = useQuery<IInfoData>(["info", coinId], () => fetchCoinInfo(coinId));
   const { isLoading: tickersLoading, data: tickersData } = useQuery<IPriceData>(
@@ -204,7 +209,7 @@ function Coin() {
               <Link to={`/${coinId}/price`}>Price</Link>
             </Tab>
           </Tabs>
-          <Outlet context={{ coinId }} />
+          <Outlet context={{ coinId, isDark }} />
         </>
       )}
     </Container>

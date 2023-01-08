@@ -72,9 +72,8 @@ const Root = () => {
   return (
     <div>
       <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
-        <button onClick={toggleDark}>토글 모드</button>
         <GlobalStyle />
-        <Outlet />
+        <Outlet context={{ toggleDark, isDark }} />
       </ThemeProvider>
     </div>
   );
