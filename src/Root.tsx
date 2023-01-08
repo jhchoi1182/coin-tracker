@@ -1,5 +1,7 @@
+import { useState } from "react";
 import { Outlet } from "react-router-dom";
-import { createGlobalStyle } from "styled-components";
+import { createGlobalStyle, ThemeProvider } from "styled-components";
+import { darkTheme, lightTheme } from "./theme";
 
 const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
@@ -65,10 +67,15 @@ a {
 `;
 
 const Root = () => {
+  const [isDark, setIsDark] = useState(false);
+  const toggleDark = () => setIsDark((isDark) => !isDark);
   return (
     <div>
-      <GlobalStyle />
-      <Outlet />
+      <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
+        <button onClick={toggleDark}>토글 모드</button>
+        <GlobalStyle />
+        <Outlet />
+      </ThemeProvider>
     </div>
   );
 };
