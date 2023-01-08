@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { darkTheme, lightTheme } from "./theme";
+import { useRecoilValue } from "recoil";
+import { isDarkAtom } from "./atoms";
 
 const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
@@ -67,13 +69,12 @@ a {
 `;
 
 const Root = () => {
-  const [isDark, setIsDark] = useState(false);
-  const toggleDark = () => setIsDark((isDark) => !isDark);
+  const isDark = useRecoilValue(isDarkAtom);
   return (
     <div>
       <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
         <GlobalStyle />
-        <Outlet context={{ toggleDark, isDark }} />
+        <Outlet />
       </ThemeProvider>
     </div>
   );
