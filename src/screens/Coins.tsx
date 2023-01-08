@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { fetchCoins } from "../api";
 import { useQuery } from "@tanstack/react-query";
+import { Helmet } from "react-helmet";
 
 interface ICoin {
   id: string;
@@ -21,6 +22,9 @@ const Coins = () => {
   return (
     <>
       <Container>
+        <Helmet>
+          <title>쓰고싶은 말</title>
+        </Helmet>
         <Header>
           <Title>코인</Title>
         </Header>
