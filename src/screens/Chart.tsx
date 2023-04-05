@@ -12,8 +12,6 @@ const Chart = () => {
 
   const { isLoading, data } = useQuery(["ohlcv", coinId], () => fetchCoinHistory(coinId));
 
-  console.log(data);
-
   return (
     <div>
       {isLoading ? (
