@@ -10,6 +10,7 @@ const Chart = () => {
   const { coinId } = useOutletContext<ChartProps>();
   const { isLoading, data } = useQuery<IHistorical[]>(["ohlcv", coinId], () => fetchCoinHistory(coinId));
   const isDark = useRecoilValue(isDarkAtom);
+  console.log(data);
 
   return (
     <div>
@@ -17,11 +18,17 @@ const Chart = () => {
         "차트 로딩 중..."
       ) : (
         <ReactApexChart
-          type="line"
+          type="candlestick"
           series={[
             {
               name: "가격",
-              data: data?.map((price) => price.close) ?? [],
+              data:
+                data?.map((data) => {
+                  return {
+                    x: data.time_close,
+                    y: [data.open, data.high, data.low, data.close],
+                  };
+                }) ?? [],
             },
           ]}
           options={{
@@ -29,6 +36,7 @@ const Chart = () => {
               mode: isDark ? "dark" : "light",
             },
             chart: {
+              type: "candlestick",
               height: 300,
               width: 500,
               toolbar: {
@@ -36,34 +44,16 @@ const Chart = () => {
               },
               background: "transparent",
             },
-            grid: {
-              show: false,
-            },
-            stroke: {
-              curve: "smooth",
-              width: 4,
-            },
-            yaxis: {
-              show: false,
+            title: {
+              text: "코인 차트",
+              align: "left",
             },
             xaxis: {
-              labels: {
-                show: false,
-              },
               type: "datetime",
-              categories: data?.map((price) => price.time_close),
             },
-            fill: {
-              type: "gradient",
-              gradient: {
-                gradientToColors: ["blue"],
-                stops: [0, 100],
-              },
-              colors: ["red"],
-            },
-            tooltip: {
-              y: {
-                formatter: (value) => `$ ${value.toFixed(2)}`,
+            yaxis: {
+              tooltip: {
+                enabled: true,
               },
             },
           }}
