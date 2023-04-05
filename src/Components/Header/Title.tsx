@@ -11,6 +11,6 @@ export default React.memo(Title);
 const TitleText = styled.h1`
   font-size: 48px;
   color: ${(props) => props.theme.accentColor};
-  width: 61%;
-  text-align: end;
+  text-align: center;
+  margin-left: 55px;
 `;

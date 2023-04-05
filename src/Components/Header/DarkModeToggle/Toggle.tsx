@@ -24,7 +24,6 @@ export default Toggle;
 const ToggleContainer = styled.div`
   display: flex;
   align-items: center;
-  margin-left: auto;
   gap: 5px;
 `;
 
