@@ -8,14 +8,18 @@ import { ChartProps, IHistorical } from "../Interface/Interface";
 
 const Chart = () => {
   const { coinId } = useOutletContext<ChartProps>();
-  const { isLoading, data } = useQuery<IHistorical[]>(["ohlcv", coinId], () => fetchCoinHistory(coinId));
   const isDark = useRecoilValue(isDarkAtom);
+
+  const { isLoading, data } = useQuery(["ohlcv", coinId], () => fetchCoinHistory(coinId));
+
   console.log(data);
 
   return (
     <div>
       {isLoading ? (
         "차트 로딩 중..."
+      ) : data.error ? (
+        `${data.error}`
       ) : (
         <ReactApexChart
           type="candlestick"
@@ -23,7 +27,7 @@ const Chart = () => {
             {
               name: "가격",
               data:
-                data?.map((data) => {
+                data?.map((data: IHistorical) => {
                   return {
                     x: data.time_close,
                     y: [data.open, data.high, data.low, data.close],

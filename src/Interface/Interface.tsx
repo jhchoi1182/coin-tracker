@@ -17,7 +17,6 @@ export interface ChartProps {
   coinId: string;
 }
 
-
 export interface RouteState {
   state: string;
 }

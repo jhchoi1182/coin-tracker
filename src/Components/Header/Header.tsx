@@ -8,8 +8,6 @@ const Header = ({ children }: ChildrenProps) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
-  console.log(pathname === "/");
-
   return (
     <HeaderContainer>
       {pathname === "/" ? (
@@ -25,17 +23,18 @@ const Header = ({ children }: ChildrenProps) => {
 
 export default Header;
 
+const HeaderContainer = styled.header`
+  height: 10vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+`;
+
 const BackBtn = styled.div`
   font-size: 20px;
   font-weight: 700;
   color: ${(props) => props.theme.textColor};
   margin-left: 5px;
   cursor: pointer;
-`;
-
-const HeaderContainer = styled.header`
-  height: 10vh;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 `;
