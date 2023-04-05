@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
-import { Link, useOutletContext } from "react-router-dom";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { fetchCoins } from "../api";
 import { useQuery } from "@tanstack/react-query";
 import { Helmet } from "react-helmet";
-import { useSetRecoilState } from "recoil";
-import { isDarkAtom } from "../atoms";
+import Toggle from "../Components/DarkModeToggle/Toggle";
 
 interface ICoin {
   id: string;
@@ -17,11 +16,9 @@ interface ICoin {
   type: string;
 }
 
-interface ICoinsProps {}
-
 const Coins = () => {
-  const { isLoading, data } = useQuery<ICoin[]>(["allCoins"], fetchCoins);
-  const setDarkAtom = useSetRecoilState(isDarkAtom);
+  const { isLoading, data, isError } = useQuery<ICoin[]>(["allCoins"], fetchCoins);
+  console.log(isError);
 
   return (
     <>
@@ -31,10 +28,12 @@ const Coins = () => {
         </Helmet>
         <Header>
           <Title>코인</Title>
-          <button onClick={() => setDarkAtom((v) => !v)}>토글 모드</button>
+          <Toggle />
         </Header>
         {isLoading ? (
           <Loader>로딩 중...</Loader>
+        ) : isError ? (
+          <Loader>조회 요청 수 시간 당 60회 초과</Loader>
         ) : (
           <CoinsList>
             {data?.slice(0, 100).map((coin) => (
@@ -52,6 +51,8 @@ const Coins = () => {
   );
 };
 
+export default Coins;
+
 const Container = styled.div`
   padding: 0px 20px;
   max-width: 480px;
@@ -63,6 +64,13 @@ const Header = styled.header`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+const Title = styled.h1`
+  font-size: 48px;
+  color: ${(props) => props.theme.accentColor};
+  width: 61%;
+  text-align: end;
 `;
 
 const CoinsList = styled.ul``;
@@ -77,18 +85,13 @@ const Coin = styled.li`
     display: flex;
     align-items: center;
     padding: 20px;
-    transition: color 0.2s ease-in;
+    transition: color 0.2s;
   }
   :hover {
     a {
       color: ${(props) => props.theme.accentColor};
     }
   }
-`;
-
-const Title = styled.h1`
-  font-size: 48px;
-  color: ${(props) => props.theme.accentColor};
 `;
 
 const Loader = styled.span`
@@ -101,5 +104,3 @@ const Img = styled.img`
   height: 35px;
   margin-right: 10px;
 `;
-
-export default Coins;
