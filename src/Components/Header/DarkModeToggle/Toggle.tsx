@@ -1,7 +1,7 @@
 import React from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import { isDarkAtom } from "../../atoms";
+import { isDarkAtom } from "../../../atoms";
 import DarkIcon from "./DarkIcon";
 import LightIcon from "./LightIcon";
 
