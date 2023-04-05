@@ -10,10 +10,10 @@ const Header = ({ children }: ChildrenProps) => {
 
   return (
     <HeaderContainer>
-      {pathname === "/" ? (
+      {pathname === `${process.env.PUBLIC_URL}/` ? (
         <div style={{ width: "25px" }}></div>
       ) : (
-        <BackBtn onClick={() => navigate("/")}>&#8592;</BackBtn>
+        <BackBtn onClick={() => navigate(`${process.env.PUBLIC_URL}/`)}>&#8592;</BackBtn>
       )}
       <Title>{children}</Title>
       <Toggle />
